@@ -240,7 +240,7 @@ end
 local function set_consumer(consumer, credential)
     ngx_set_header(constants.HEADERS.CONSUMER_ID, consumer.id)
     ngx_set_header(constants.HEADERS.CONSUMER_CUSTOM_ID, consumer.custom_id)
-    ngx.ctx.kso_authenticated_consumer = consumer
+    ngx.ctx.authenticated_consumer = consumer
     if credential then
         ngx.ctx.kso_authenticated_credential = credential
     end
@@ -298,7 +298,6 @@ function _M.execute(conf)
         return
     end
     local ok, err = do_authentication(conf)
-    log.debug("do_authentication auth finish")
     if not ok then
         log.debug("do_authentication auth failed, err: ", err)
         return response.exit(err.status, err.message)
